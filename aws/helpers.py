@@ -1,6 +1,6 @@
 import boto3
 import json
-from config import KEY, SECRET, REGION, ROLE_NAME
+from config import KEY, SECRET, REGION, ROLE_NAME, DATABASE_PORT
 
 def create_aws_clients(client):
     try:
@@ -76,3 +76,19 @@ def attach_role_policy(iam_client):
                       )['ResponseMetadata']['HTTPStatusCode']
     except Exception as e:
         print('Error attaching role policy', e)
+
+def allow_cluster_ingress(ec2_client, cluster):
+    try:
+        vpc = ec2_client.Vpc(id = cluster['VpcId'])
+        default_security_group = list(vpc.security_groups.all())[0]
+        print(default_security_group)
+
+        default_security_group.authorize_ingress(
+            GroupName = default_security_group.group_name,
+            CirdrIp = '0.0.0.0/0',
+            IpProtocol = 'TCP',
+            FromPort = int(DATABASE_PORT),
+            ToPort = int(DATABASE_PORT)
+        )
+    except Exception as e:
+        print('Error opening TCP port: ', e)
