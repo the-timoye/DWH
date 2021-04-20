@@ -17,7 +17,7 @@ staging_events_table_create= ("""
         session_id INTEGER NOT NULL,
         song VARCHAR(50) NOT NULL,
         status INTEGER NOT NULL,
-        ts TIMESTAMP NOT NULL,
+        ts BIGINT NOT NULL,
         user_agent VARCHAR(50) NOT NULL,
         user_id INTEGER NOT NULL
     )
