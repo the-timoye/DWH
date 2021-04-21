@@ -67,6 +67,10 @@ def create_cluster(redshift_client, roleArn):
         print('An error occured while creating cluster')
         print(e)
 
+def check_cluster_status(redshift_client):
+        cluster_status = redshift_client.describe_clusters(ClusterIdentifier=CLUSTER_ID)['Clusters'][0]['ClusterStatus']
+        return cluster_status
+
 def attach_role_policy(iam_client, role):
     try:
         return iam_client.attach_role_policy(
@@ -91,3 +95,35 @@ def allow_cluster_ingress(ec2_client, cluster):
         )
     except Exception as e:
         print('Error opening TCP port: ', e)
+
+async def delete_cluster(client):
+    print('================== DELETING CLUSTER ================== ')
+    try:
+        await client.delete_cluster(
+        ClusterIdentifier = CLUSTER_ID,
+        SkipFinalClusterSnapshot = True
+        )
+        cluster_status = check_cluster_status(client)
+        print('Cluster status: ', cluster_status)
+        while cluster_status == 'deleting':
+            print('Status check: ', cluster_status)
+            cluster_status = check_cluster_status(client)
+
+        print('================== CLUSTER DELETED ================== ')
+    except Exception as e:
+        print('Error deleting snapshot', e)
+
+def delete_role(iam_client, arn):  
+    try:
+        print('================== DETACHING ROLE POLICY ================== ')
+        iam_client.detach_role_policy(
+            RoleName=ROLE_NAME,
+            PolicyArn=arn
+        )
+
+        print('================== DELETING ROLE ================== ')
+        iam_client.delete_role(
+            RoleName=ROLE_NAME
+        )
+    except Exception as e:
+        print('Error deleting role', e)
