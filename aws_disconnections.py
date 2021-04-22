@@ -7,8 +7,11 @@ def main():
     cluster_status = check_cluster_status(redshift_client)
     if cluster_status == 'available':
         delete_cluster(redshift_client)
-    elif cluster_status =='deleting':
-        print('Deleting cluster ...')
+    elif cluster_status == 'deleting':
+        while cluster_status == 'deleting':
+            print('============== DELETING CLUSTER ==============')
+            print('Status check: ', cluster_status)
+            cluster_status = check_cluster_status(redshift_client)
     else:
         print('No cluster found: ', cluster_status)
 
