@@ -68,8 +68,11 @@ def create_cluster(redshift_client, roleArn):
         print(e)
 
 def check_cluster_status(redshift_client):
+    try:
         cluster_status = redshift_client.describe_clusters(ClusterIdentifier=CLUSTER_ID)['Clusters'][0]['ClusterStatus']
         return cluster_status
+    except Exception as e:
+        print('This cluster has either been deleted or never existed')
 
 def attach_role_policy(iam_client, role):
     try:
@@ -96,10 +99,10 @@ def allow_cluster_ingress(ec2_client, cluster):
     except Exception as e:
         print('Error opening TCP port: ', e)
 
-async def delete_cluster(client):
+def delete_cluster(client):
     print('================== DELETING CLUSTER ================== ')
     try:
-        await client.delete_cluster(
+        client.delete_cluster(
         ClusterIdentifier = CLUSTER_ID,
         SkipFinalClusterSnapshot = True
         )
