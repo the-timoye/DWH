@@ -57,7 +57,7 @@ The dimensional tables generated from the dataset are as follows:
     - Columns:
 
         | column name |  datatype |
-        |------------:|----------:|
+        |-------------|-----------|
         | songplay_id |  IDENTITY |
         |  start_time | TIMESTAMP |
         |     user_id |   INTEGER |
@@ -76,7 +76,7 @@ The dimensional tables generated from the dataset are as follows:
     - Columns:
     
         | column name | datatype |
-        |------------:|---------:|
+        |-------------|----------|
         |     user_id |  INTEGER |
         |      gender |  VARCHAR |
         |  first_name |  VARCHAR |
@@ -88,7 +88,7 @@ The dimensional tables generated from the dataset are as follows:
     - Table Type: Dimension  table
     - Columns:
         | column name | datatype |
-        |------------:|---------:|
+        |-------------|----------|
         |   artist_id |  VARCHAR |
         |        name |  VARCHAR |
         |    location |  VARCHAR |
@@ -100,7 +100,7 @@ The dimensional tables generated from the dataset are as follows:
     - Table Type: Dimension  table
     - Columns:
         | column name |  datatype |
-        |------------:|----------:|
+        |-------------|-----------|
         | start_time  | TIMESTAMP |
         | hour        |   INTEGER |
         | day         |   INTEGER |
@@ -114,7 +114,7 @@ The dimensional tables generated from the dataset are as follows:
     - Table Type: Dimension  table
     - Columns:
         | column name | datatype |
-        |------------:|---------:|
+        |-------------|----------|
         | song_id     |  VARCHAR |
         | title       |  VARCHAR |
         | artist_id   |  VARCHAR |
