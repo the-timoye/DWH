@@ -6,7 +6,7 @@ redshift_client = create_aws_clients('redshift')
 cluster = redshift_client.describe_clusters(ClusterIdentifier=CLUSTER_ID)['Clusters'][0]
 cluster_address = cluster['Endpoint']['Address']
 
-def main():
+def connect_database():
     print('============== CONNECT DATABASE ==============')
     try:
         connection = psycopg2.connect(
@@ -20,6 +20,3 @@ def main():
 
     except Exception as e:
         print('Database Connection Error:', e)
-
-if __name__ == "__main__":
-    main()
