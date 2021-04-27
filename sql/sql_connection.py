@@ -14,9 +14,8 @@ def connect_database():
         database=DATABASE,
         user=DATABASE_USER,
         password=DATABASE_PASSWORD)
-        cursor = connection.cursor()
         print('database connected.')
-        return cursor
+        return connection
 
     except Exception as e:
         print('Database Connection Error:', e)
