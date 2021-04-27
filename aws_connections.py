@@ -30,14 +30,14 @@ def main():
     while cluster_status != 'available':
         print('Status check: ', cluster_status)
         cluster_status = check_cluster_status(redshift_client)
-    
+
+    print('============== OPEN CLUSTERS TCP PORT FOR INCOMING ACCESS ==============')
+    allow_cluster_ingress(ec2_client, cluster)
+
     cluster_address = cluster['Endpoint']['Address']
     cluster_role_arn = cluster['IamRoles'][0]['IamRoleArn']
     print('Cluster Address = ', cluster_address)
     print('Cluster Role Arn = ', cluster_role_arn)
-
-    print('============== OPEN CLUSTERS TCP PORT FOR INCOMING ACCESS ==============')
-    allow_cluster_ingress(ec2_client, cluster)
 
 if __name__ == "__main__":
     main()
