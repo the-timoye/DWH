@@ -1,5 +1,14 @@
-from config import KEY, SECRET, ROLE_NAME as ROLE, CLUSTER_ID, DATABASE, DATABASE_USER, DATABASE_PASSWORD, DATABASE_PORT
-from aws.helpers import create_aws_clients, create_aws_resource, attach_role_policy, create_cluster, allow_cluster_ingress, create_iam_role, check_cluster_status
+from config import (ROLE_NAME as ROLE, CLUSTER_ID)
+from aws.helpers import (
+    create_aws_clients,
+    create_aws_resource,
+    attach_role_policy,
+    create_cluster,
+    allow_cluster_ingress,
+    create_iam_role,
+    check_cluster_status
+)
+
 
 def main():
     # Define boto3 clients for IAM & Redshift
@@ -22,7 +31,8 @@ def main():
     create_cluster(redshift_client, roleArn)
 
     print('============== DESCRIBE REDSHIFT CLIENT ==============')
-    cluster = redshift_client.describe_clusters(ClusterIdentifier=CLUSTER_ID)['Clusters'][0]
+    cluster = redshift_client.describe_clusters(
+        ClusterIdentifier=CLUSTER_ID)['Clusters'][0]
     cluster_status = cluster['ClusterStatus']
 
     print('============== CHECKING CLUSTER STATUS ==============')
@@ -38,6 +48,7 @@ def main():
     cluster_role_arn = cluster['IamRoles'][0]['IamRoleArn']
     print('Cluster Address = ', cluster_address)
     print('Cluster Role Arn = ', cluster_role_arn)
+
 
 if __name__ == "__main__":
     main()
