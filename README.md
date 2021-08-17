@@ -13,13 +13,20 @@ This project allows easy analysis of Sparkify's data by:
     - Transforming the data into a set of dimensional tables for easier analysis.
     
     
-## FILE CONTENTS
+## FOLDER & FILE CONTENTS
 
-    A. sql_queries.py: contains all drop, copy, and insert queries to complete the ETL process.
+    A. sql (folder): contains all drop, copy, and insert queries to complete the ETL process.
+        Also contains the ```connect_database``` function. <br>
     
-    B. create_tables.py: contains functions that run the `DROP` and `CREATE` query statements in sql_queries.py
+    B. aws_connections.py: This creates roles, cluster, attaches role policy and opens cluster's TCP port. Your cluster and ARN is also stored in your config file. <br>
     
-    C. etl.py: the functions here run the `COPY` and `INSERT` query statements in the sql_queries.py file
+    C. etl.py: the functions here run the `COPY` and `INSERT` query statements in the sql_queries.py file <br>
+
+    D. aws_disconnections.py: Contains functions to delete created role, detach policies and delete cluster
+
+    E. config.py: extracts all needed keys from configuration file
+
+    F. aws (folder): contains functions that use the boto3 library to create and delete roles, users, and clusters
     
     
 ## RUNNING THE SCRIPTS
@@ -36,14 +43,16 @@ Once these are confirmed, be sure to include the following in your config file:
     - ROLE_NAME
     
 #### Step 1:
-    Run the create_tables.py file in your terminal. 
-    This file drops all existing tables and creates new tables with the rukes specified in the sql_queries.py file.
+    create redshift client with ```aws_connections.py```
+    This creates roles, cluster, attaches role policy and opens cluster's TCP port
+    Your cluster and ARN is also stored in your config file.
+
 ### Step 2:
     Run the etl.py file in your terminal.
     Here, data in the S3 buckets are copied to the staging tables created above.
-    The data in the staging tables are then transformed to fact and dimentional tables created in Step 1.
-### Step 3 (Optional):
-    To run test queries on the fact and dimension tables, run the test_quesries.py script in your terminal.
+    At the end of the insert operation, you will be required to input a 'Y' or 'N'. This determins if you would like to run the ```SELECT``` queries on your newly created warehouse.
+### Step 3:
+    Run `aws_disconnections.py` to delete cluster and role created
     
 
 ## The Schema
